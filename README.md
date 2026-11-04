@@ -95,7 +95,7 @@ end in the Bockstein.
 The engine computes the stable Adams E₂-page
 
 $$
-E_2^{s,t}=\operatorname{Ext}_{\mathcal{A}}^{s,t}
+E_2^{s,t}=Ext_{\mathcal{A}}^{s,t}
 \bigl(H^*(\mathbb{SP}^{p^k};\mathbb{F}_p),\mathbb{F}_p\bigr).
 $$
 
