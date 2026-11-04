@@ -6,7 +6,7 @@ to homotopy degree in `S^1_k = P_(p^k) I(S^1)`.
 
 The resolution, Steenrod algebra arithmetic, and products come from
 [SpectralSequences/sseq](https://github.com/SpectralSequences/sseq).
-A small adapter adds a chosen filtration bound and a module-dimension check;
+A small adapter adds a chosen filtration bound and supports an optional module-dimension check;
 the algebra and resolution algorithms are unchanged. No Ext solver, Adem
 reduction, backend, or framework is implemented here. The browser computes real results.
 
@@ -64,32 +64,13 @@ exponents in the pure admissible words, for comparison. The odd-prime tests also
 construct the full list with interior Bocksteins independently.
 
 Every reduced relation lies in the full length ideal, giving a surjection
-onto the intended quotient. Before resolving, the existing adapter checks its
-dimension in **every internal degree through the cutoff** against the
-admissible basis count. Equality of dimensions certifies the quotient in that
-range. A mismatch stops the calculation. We do not infer a general theorem
-about the reduced list from checking only a few Ext groups.
-
-`moduleDimensions(p, k, degree)` counts the basis via generating series. At p=2:
-
-    1 + sum_(l=1)^k x^(2(2^l-1)) / product_(j=1)^l (1-x^(2^j-1)).
-
-At odd p:
-
-    1 + sum_(l=1)^k x^(2(p^l-1))
-        * product_(j=0)^(l-1) (1+x^(2p^j-1))
-        / product_(j=1)^l (1-x^(2(p^j-1))).
-
-For p=2, an admissible word of length l has last exponent at least 2.
-Writing r_i=a_i-2a_(i+1) for i<l and r_l=a_l-2 gives the geometric factors.
-At odd p the basis words are b^e0 P^a1 b^e1 ... P^al, with a_l>=1 and
-`a_i >= p a_(i+1)+e_i`. The leading Bockstein contributes (1+x); each interior
-Bockstein contributes (1+x^(2p^i-1)), including its effect on admissibility.
-Nonnegative excesses give the denominator. The code expands these factors
-using short loops; it does not implement Steenrod arithmetic.
-
-The JSON field `expected_dimensions` carries the count. Upstream versions
-without our adapter ignore it but can still read the module relations.
+onto the intended quotient. The page supplies these relations directly to
+the resolver without calculating an independent admissible basis count.
+The bundled adapter still supports the optional JSON field `expected_dimensions`,
+but the page no longer supplies it, so automatic degreewise dimension validation
+is disabled. An incomplete relation list can therefore produce incorrect results
+without being rejected by this check. Earlier regression checks provide evidence
+for the reduced presentation, not a general proof for all inputs.
 
 These are relations in the full Steenrod algebra, not a smaller A(n).
 The infinite module is represented by a finite presentation that agrees with
@@ -160,7 +141,9 @@ Reference: [An abelian model for the Goodwillie tower of the circle](https://arx
 
 ## Verification
 
-`npm test` checks:
+The original source project's `npm test` suite checked the following. This
+standalone folder does not include that test harness. Dimension-count checks
+describe the earlier version; the page no longer performs them:
 
 1. Parameter validation and the homotopy-degree shift.
 2. Relation enumeration against independent brute force.

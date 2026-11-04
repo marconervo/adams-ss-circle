@@ -1,5 +1,5 @@
 // The arithmetic and resolution are supplied by ext-rs. This file only
-// validates inputs, enumerates relations, and counts the admissible basis.
+// validates inputs and enumerates relations.
 export function validatePrime(p) {
   if (!Number.isSafeInteger(p) || p < 2)
     throw new Error('p must be a prime number (2, 3, 5, 7, …).');
@@ -36,25 +36,6 @@ export function* relations(p, length, limit, powersOnly = true, suffix = []) {
     yield* relations(p, length - 1, limit - a, powersOnly, [a, ...suffix]);
 }
 
-// Count Nakaoka's admissible basis using geometric-series factors.
-// Odd primes also have exterior factors for the allowed Bocksteins; see README.
-export function moduleDimensions(p, k, degree) {
-  const dimensions = Array(degree + 1).fill(0), partitions = [...dimensions];
-  dimensions[0] = partitions[0] = 1;
-  for (let length = 1; length <= k; length++) {
-    const start = 2 * (p ** length - 1);
-    if (start > degree) break;
-    const weight = p === 2 ? start / 2 : start;
-    if (p !== 2) {
-      const exterior = 2 * p ** (length - 1) - 1;
-      for (let d = degree; d >= exterior; d--) partitions[d] += partitions[d - exterior];
-    }
-    for (let d = weight; d <= degree; d++) partitions[d] += partitions[d - weight];
-    for (let d = start; d <= degree; d++) dimensions[d] += partitions[d - start];
-  }
-  return dimensions;
-}
-
 export function symmetricPowerModule(p, k, degree, powersOnly = true) {
   validatePrime(p);
   if (!Number.isInteger(k) || k < 0 || !Number.isInteger(degree) || degree < 1)
@@ -66,8 +47,7 @@ export function symmetricPowerModule(p, k, degree, powersOnly = true) {
     p, type: 'finitely presented module', gens: { x0: 0 },
     adem_relations: [p === 2 ? 'Sq1 x0' : 'b x0',
       ...Array.from(relations(p, k + 1, Math.floor(degree / unitDegree), powersOnly),
-        word => word.map(a => `${operation}${a}`).join(' ') + ' x0')],
-    expected_dimensions: moduleDimensions(p, k, degree)
+        word => word.map(a => `${operation}${a}`).join(' ') + ' x0')]
   };
 }
 
