@@ -134,13 +134,13 @@ function draw() {
   }
   const enabled = new Set([...document.querySelectorAll('[data-product]:checked')].map(el => el.dataset.product));
   if (enabled.has(prime === 2 ? 'h_0' : 'a_0')) for (let s = 1; s < tower.length; s++)
-    add('line', { x1: x(tower[s]), x2: x(tower[s]), y1: y(s - 1), y2: y(s), stroke: '#000', 'stroke-width': 1.3 });
+    add('line', { x1: x(tower[s]), x2: x(tower[s]), y1: y(s - 1), y2: y(s), stroke: colors[prime === 2 ? 'h_0' : 'a_0'], 'stroke-width': 1.3 });
   for (const p of products) {
     if (!enabled.has(p.name)) continue;
     const [n, s] = p.source, [dn, ds] = p.shift;
     p.matrix.forEach((row, i) => row.forEach((coefficient, j) => {
       const from = positions.get(`${n},${s},${i}`), to = positions.get(`${n + dn},${s + ds},${j}`);
-      if (coefficient && from && to) add('line', { x1: from[0], y1: from[1], x2: to[0], y2: to[1], stroke: k === 0 && n === 0 && dn === 0 ? '#000' : colors[p.name], 'stroke-width': 1.3 });
+      if (coefficient && from && to) add('line', { x1: from[0], y1: from[1], x2: to[0], y2: to[1], stroke: colors[p.name], 'stroke-width': 1.3 });
     }));
   }
   for (const c of visible) for (let i = 0; i < c.dimension; i++) {
