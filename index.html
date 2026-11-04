@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>An Adams SS for the Goodwillie tower of the circle</title>
+  <meta name="description" content="Compute the mod-p Adams E2 page for symmetric-product models of the Goodwillie tower of the circle, using ext-rs.">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>An Adams SS for the Goodwillie tower of the circle</h1>
+  </header>
+  <section class="notes" aria-label="Mathematical background">
+    <p>This tool computes an Adams \(E_2\)-page for studying the \(p\)-local homotopy groups of \(P_{p^k}I(S^1)\), for a fixed prime \(p\) and approximation degree \(k\).</p>
+    <details class="explanation">
+      <summary>Mathematical explanation</summary>
+      <p>The construction reduces this unstable problem to a calculation with spectra.</p>
+
+      <p>By [Ner26, Theorem C], there is a \(p\)-local equivalence
+        \[
+          \Omega P_{p^k}I(S^1)
+          \simeq \mathbb{Z}\times\Omega^{\infty+2k}\tau_{>0}\mathbb{Sp}^{p^k},
+        \]
+        where \(\mathbb{Sp}^{m}\) is the \(m\)th symmetric product spectrum and \(\tau_{>0}\) denotes its connective cover. Thus the spectrum
+        \[
+          E_k = \mathbb{Z}\oplus\Sigma^{-2k}\tau_{>0}\mathbb{Sp}^{p^k}
+        \]
+        provides a stable model for the loop space, and its Adams spectral sequence gives access to the homotopy groups of the Goodwillie approximation, with a shift of one degree.</p>
+
+      <p>Nakaoka’s calculation [Nak58, §5, Main Theorem] identifies
+        \[
+          H^*(\mathbb{Sp}^{p^k};\mathbb{F}_p)
+          \cong \mathcal{A}\big/\bigl(\mathcal{A}\beta+\mathcal{A}_{>k}\bigr).
+        \]
+        Here \(\mathcal{A}\) is the mod-\(p\) Steenrod algebra, \(\beta\) is the Bockstein, and \(\mathcal{A}_{>k}\) is the length-filtration left ideal spanned by admissible monomials of length at least \(k+1\). Equivalently, a basis of the quotient consists of the unit and admissible monomials of length at most \(k\) that do not end in the Bockstein.</p>
+
+      <p>The calculator uses the resolution software <em>ext-rs</em> of Chatham, Chua, and Beauvais-Feisthauer [CCB] to compute
+        \[
+          E_2^{s,t}=\operatorname{Ext}_{\mathcal{A}}^{s,t}
+          \bigl(H^*(\mathbb{Sp}^{p^k};\mathbb{F}_p),\mathbb{F}_p\bigr).
+        \]
+        Only the part of Nakaoka’s presentation needed in the requested degree range is supplied to the resolver; its dimensions are checked in that range before the calculation. The chart displays this stable \(E_2\)-page in homotopy degree \(q=t-s-2k+1\) for \(q\ge2\), together with the vertical tower at \(q=1\) for the separate \(\mathbb{Z}\)-factor.</p>
+
+      <p>Differentials and hidden extensions are not computed.</p>
+
+      <div class="references" aria-label="References">
+        <h2>References</h2>
+        <dl>
+          <dt>[CCB]</dt><dd>Hood Chatham, Dexter Chua, and Joey Beauvais-Feisthauer. <em>The Spectral Sequences Project</em>, <em>ext</em> / <em>ext-rs</em> resolution software. Repository: SpectralSequences/sseq.</dd>
+          <dt>[Nak58]</dt><dd>Minoru Nakaoka. <em>Cohomology mod \(p\) of symmetric products of spheres.</em> Journal of the Institute of Polytechnics, Osaka City University, Series A, Mathematics <strong>9</strong> (1) (1958), 1–18.</dd>
+          <dt>[Ner26]</dt><dd>Marco Nervo. <em>An abelian model for the Goodwillie tower of the circle.</em> Preprint, 2026. arXiv:2609.31269.</dd>
+        </dl>
+      </div>
+    </details>
+  </section>
+  <section class="panel controls" aria-label="Calculation settings">
+    <form id="settings">
+      <label><span>Prime</span><input id="prime" type="number" min="2" step="1" value="2" required></label>
+      <label><span>Approximation degree</span><input id="k" type="number" min="0" step="1" value="1" required></label>
+      <label><span>Max. range</span><input id="range" type="number" min="1" step="1" value="20" required></label>
+      <label><span>Max. filtration</span><input id="filtration" type="number" min="0" step="1" value="15" required></label>
+      <button id="compute" type="submit">Compute E₂</button>
+      <button id="stop" type="button" class="secondary" hidden>Stop</button>
+    </form>
+  </section>
+  <section class="panel output" aria-label="Spectral sequence chart">
+    <p id="status" role="status" aria-live="polite" hidden></p>
+    <div class="legend" aria-label="Product lines">
+    </div>
+    <div id="chart" tabindex="0" aria-label="Scrollable spectral sequence chart"><p class="empty">Your calculation will appear here.</p></div>
+    <div class="downloads">
+      <button id="module" class="secondary" disabled>Download module</button>
+      <button id="json" class="secondary" disabled>Download data</button>
+      <button id="svg" class="secondary" disabled>Download SVG</button>
+    </div>
+  </section>
+  <footer><a href="source.zip" download>Download source</a></footer>
+</main>
+<script defer src="vendor/katex/katex.min.js"></script>
+<script defer src="vendor/katex/auto-render.min.js"></script>
+<script defer src="math.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
