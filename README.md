@@ -68,13 +68,13 @@ product matrices, regardless of which lines are visible.
 
 ## Mathematical background
 
-Write $\mathbb{SP}^{m}$ for the mth symmetric product spectrum. The construction
+Write $\mathbb{Sp}^{m}$ for the mth symmetric product spectrum. The construction
 uses the p-local equivalence from [Ner26, Theorem C]:
 
 $$
 \Omega P_{p^k}I(S^1)
 \simeq \mathbb{Z}\times
-\Omega^{\infty+2k}\tau_{>0}\mathbb{SP}^{p^k},
+\Omega^{\infty+2k}\tau_{>0}\mathbb{Sp}^{p^k}
 $$
 
 where $\tau_{>0}$ denotes the connective cover. This relates the Goodwillie
@@ -83,8 +83,8 @@ approximation to a stable calculation with symmetric product spectra.
 Nakaoka's description [Nak58, §5, Main Theorem] gives
 
 $$
-H^*(\mathbb{SP}^{p^k};\mathbb{F}_p)
-\cong \mathcal{A}/(\mathcal{A}\beta+\mathcal{A}_{>k}),
+H^*(\mathbb{Sp}^{p^k};\mathbb{F}_p)
+\cong \mathcal{A}/(\mathcal{A}\beta+\mathcal{A}_{>k})
 $$
 
 where $\mathcal{A}$ is the mod-p Steenrod algebra, $\beta$ is the Bockstein, and
@@ -96,7 +96,7 @@ The engine computes the stable Adams E₂-page
 
 $$
 E_2^{s,t}=Ext_{\mathcal{A}}^{s,t}
-\bigl(H^*(\mathbb{SP}^{p^k};\mathbb{F}_p),\mathbb{F}_p\bigr).
+\bigl(H^*(\mathbb{Sp}^{p^k};\mathbb{F}_p),\mathbb{F}_p\bigr)
 $$
 
 The chart uses the horizontal coordinate $q=t-s-2k+1$. For q ≥ 2, this is the
